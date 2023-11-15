@@ -39,7 +39,7 @@ export const AlbumCard = ({
 };
 
 const ButtonGroup = ({ id }: { id: String }) => {
-    const invitationLink = `https://k5ebddfe59255a.user-app.krampoline.com/album/invite?id=${id}`;
+    const invitationLink = `${process.env.REACT_APP_FRONT_URL}/album/invite?id=${id}`;
 
     const copyToClipboard = async () => {
         try {
