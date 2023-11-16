@@ -8,7 +8,7 @@ import './index.scss';
 
 declare const window: Window & { Kakao: any; google: any };
 
-const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_KEY}&redirect_uri=http://localhost:3000/login/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile`;
+const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_KEY}&redirect_uri=${process.env.REACT_APP_FRONT_URL}/login/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile`;
 const staticServerUri =
     process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000'
