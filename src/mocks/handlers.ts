@@ -21,45 +21,50 @@ import {
 // res: 모의 응답을 만들 수 있는 유틸리티
 // ctx: 모의 응답의 HTTP 상태 코드, 헤더, 바디 등을 만들 수 있는 함수들
 export const handlers = [
-    rest.get('/api/groups', (req, res, ctx) => {
+    rest.get('/groups', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(albumList));
     }),
-    rest.get('/api/album-info', (req, res, ctx) => {
+    rest.get('/album-info', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(albumInfo));
     }),
-    rest.get('/api/albums/1/pages/1', (req, res, ctx) => {
+    rest.get('/albums/:albumId/pages/:pageId', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(canvasExample2));
-
-        // return res(ctx.status(200), ctx.json(rewards));
     }),
-    rest.get('/api/rewards', (req, res, ctx) => {
+    rest.put('/albums/:albumId/pages/:pageId', (req, res, ctx) => {
+        const requestBody = req.body as any;
+        canvasExample2.assets = requestBody.assets;
+        canvasExample2.shapes = requestBody.shapes;
+        canvasExample2.bindings = requestBody.bindings;
+        return res(ctx.status(200), ctx.json(SuccessResponse));
+    }),
+
+    rest.get('/rewards', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(rewards));
     }),
-    rest.get('/api/titles', (req, res, ctx) => {
+    rest.get('/titles', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(titles));
     }),
-    rest.post('/api/auth/kakao/login', (req, res, ctx) => {
+    rest.post('/auth/kakao/login', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(loginResponse));
     }),
-    rest.get('/api/user', (req, res, ctx) => {
+    rest.get('/users', (req, res, ctx) => {
         if (req.headers.get('Authorization') === 'Bearer token') {
             return res(ctx.status(200), ctx.json(userResponse));
         } else {
             return res(ctx.status(401), ctx.json(unauthorizedResponse));
         }
     }),
-    rest.post('/api/auth/logout', (req, res, ctx) => {
+    rest.post('/auth/logout', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(logoutResponse));
     }),
 
-    rest.get('/api/albums/1', (req, res, ctx) => {
+    rest.get('/albums/1', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(albumDetailInfo));
     }),
-    rest.get('/api/users/:userId/rewards', (req, res, ctx) => {
-        const { userId } = req.params;
+    rest.get('/users/rewards', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(userTitles));
     }),
-    rest.post<CreateAlbumData>('/api/albums/creation', (req, res, ctx) => {
+    rest.post<CreateAlbumData>('/albums/creation', (req, res, ctx) => {
         const { albumName } = req.body as CreateAlbumData;
         return res(
             ctx.status(200), // 성공 상태 코드
@@ -73,13 +78,12 @@ export const handlers = [
             }),
         );
     }),
-    rest.get('/api/albums/1/members', (req, res, ctx) => {
+    rest.get('/albums/:albumId/members', (req, res, ctx) => {
         const { albumId } = req.params;
         return res(ctx.status(200), ctx.json(albumMembers));
     }),
-    rest.post('/api/albums/:albumId/members/join', (req, res, ctx) => {
+    rest.post('/albums/:albumId/members/join', (req, res, ctx) => {
         const { albumId } = req.params;
-        const authToken = req.headers.get('Authorization');
         return res(
             ctx.status(200),
             ctx.json({
@@ -89,7 +93,7 @@ export const handlers = [
             }),
         );
     }),
-    rest.get('/api/albums/:albumId/trashs', (req, res, ctx) => {
+    rest.get('/albums/:albumId/trashes', (req, res, ctx) => {
         const albumId = req.params.albumId;
         // 실제 애플리케이션에서는 albumId를 사용하여 데이터를 필터링할 수 있습니다.
         return res(
@@ -119,9 +123,8 @@ export const handlers = [
             }),
         );
     }),
-    rest.put('/api/users/:userId/titles/:titleId', (req, res, ctx) => {
+    rest.put('/users/:userId/titles/:titleId', (req, res, ctx) => {
         const { userId, titleId } = req.params;
-        const authToken = req.headers.get('Authorization');
         return res(
             ctx.status(200),
             ctx.json({
@@ -130,9 +133,13 @@ export const handlers = [
             }),
         );
     }),
-    rest.put('/api/users/:userId', (req, res, ctx) => {
-        const { userId } = req.params;
-        const authToken = req.headers.get('Authorization');
+    rest.put('/users/:userId', (req, res, ctx) => {
         return res(ctx.status(200), ctx.json(userInfoModifiedResponse));
     }),
 ];
+
+const SuccessResponse = {
+    success: true,
+    response: null,
+    error: null,
+};

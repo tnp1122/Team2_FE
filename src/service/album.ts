@@ -1,5 +1,5 @@
 import httpClient from './index';
-import { TDShape } from '@tldraw/tldraw';
+import { TDAsset, TDBinding, TDShape } from '@tldraw/tldraw';
 import { useMutation } from 'react-query';
 
 interface AlbumsResponse {
@@ -34,8 +34,8 @@ interface AlbumInfoResponse {
 
 export interface CanvasResponse {
     shapes: Record<string, TDShape | undefined>;
-    bindings: Record<string, TDShape | undefined>;
-    assets: Record<string, TDShape | undefined>;
+    bindings: Record<string, TDBinding | undefined>;
+    assets: Record<string, TDAsset | undefined>;
 }
 
 interface CanvasRequest {
@@ -75,26 +75,29 @@ export interface AlbumMembersResponse {
 }
 
 const albumApi = {
-    getAlbumGroup: (): Promise<AlbumsResponse> => httpClient.get('/groups'),
+    getAlbumGroup: (): Promise<AlbumsResponse> => httpClient.get('/api/groups'),
     getAlbumInfo: (): Promise<AlbumInfoResponse> =>
-        httpClient.get('/album-info'),
+        httpClient.get('/api/album-info'),
     getAlbumCanvasById: (albumId: string, pageId: string): Promise<any> =>
-        httpClient.get(`/albums/${albumId}/pages/${pageId}`),
-    getAlbumById: (albumId: String | null): Promise<AlbumDetailResponse> =>
-        httpClient.get(`/albums/${albumId}`),
+        httpClient.get(`/api/albums/${albumId}/pages/${pageId}`),
+    getAlbumById: (albumId: string | null): Promise<AlbumDetailResponse> =>
+        httpClient.get(`/api/albums/${albumId}`),
     getAlbumTrash: (
         albumId: string | undefined,
     ): Promise<TrashPageResponse> => {
-        return httpClient.get(`/albums/${albumId}/trashs`);
+        return httpClient.get(`/api/albums/${albumId}/trashes`);
+    },
+    saveAlbumCanvas: (albumId: string, pageId: string, data: any) => {
+        return httpClient.put(`/api/albums/${albumId}/pages/${pageId}`, data);
     },
     restoreTrashPage: (albumId: string | undefined, trashId: Number) =>
-        httpClient.post(`/albums/${albumId}/trashs/${trashId}`),
+        httpClient.post(`/api/albums/${albumId}/trashes/${trashId}`),
     getMembers: (albumId: String): Promise<AlbumMembersResponse> =>
-        httpClient.get(`/albums/${albumId}/members`),
+        httpClient.get(`/api/albums/${albumId}/members`),
 };
 
 const createAlbum = async (albumData: CreateAlbumData) => {
-    const response = await httpClient.post('/albums/creation', albumData, {
+    const response = await httpClient.post('/api/albums/creation', albumData, {
         headers: {
             Authorization: `Bearer yourToken`,
         },
@@ -107,7 +110,7 @@ async function acceptInvite(albumId: string, authToken: string) {
     try {
         // HTTP 요청을 보내고 응답을 기다림
         const response = await httpClient.post(
-            `/albums/${albumId}/members/join`,
+            `/api/albums/${albumId}/members/join`,
             {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
