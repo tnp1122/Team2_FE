@@ -120,7 +120,7 @@
 **🫂 나만의 포토 앨범 만들기**
 
 
-![그룹생성-2-2](https://github.com/Step3-kakao-tech-campus/Team2_FE/assets/80628077/8cbb875e-5b3f-40c0-9499-dac9aa1b232c)
+![그룹 생성](https://github.com/Step3-kakao-tech-campus/Team2_FE/assets/80628077/52ea2d36-cebd-4222-a819-5ae39fb86d0d)
 ![앨범꾸미기](https://github.com/Step3-kakao-tech-campus/Team2_FE/assets/80628077/a734369c-a02b-454b-8536-96a72890ac59)
 ![앨범보기](https://github.com/Step3-kakao-tech-campus/Team2_FE/assets/80628077/158b0f96-f7ad-452d-9ad6-a513c4c59423)
    - 간단한 로직을 통해 그룹을 생성하고 앨범을 꾸밀 수 있어요!
